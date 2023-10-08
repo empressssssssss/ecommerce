@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:interview_app2/bloc/add_to_cart_bloc/add_to_cart_bloc.dart';
+import 'package:interview_app2/bloc/add_to_cart_bloc/add_to_cart_event.dart';
 import 'package:interview_app2/screens/product_list_screen.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -6,8 +9,9 @@ class CategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return BlocProvider(
+      create: (context) => ProductListBloc()..add(LoadProductsEvent()),
+      child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           title: const Text(
@@ -16,12 +20,12 @@ class CategoryPage extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {},
-          ),
+          backgroundColor: const Color.fromARGB(255, 251, 251, 251),
+          // leading: IconButton(
+          //   icon: const Icon(Icons.arrow_back),
+          //   color: Colors.black,
+          //   onPressed: () {},
+          // ),
         ),
         body: const BoxGrid(),
       ),

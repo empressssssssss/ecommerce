@@ -3,6 +3,9 @@ import 'package:interview_app2/bloc/add_to_cart_bloc/add_to_cart_event.dart';
 import 'package:interview_app2/bloc/add_to_cart_bloc/add_to_cart_state.dart';
 import 'package:interview_app2/models/products.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class CartBloc extends Bloc<CartEvent, CartState> {
   final CounterBloc counterBloc = CounterBloc();
 
@@ -20,11 +23,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final updatedCart = List<Product>.from(state.cartItems)
         ..remove(event.product);
       emit(CartState(updatedCart));
+    } else if (event is ConfirmOrderAndClearCart) {
+      emit(CartState([]));
     }
   }
 }
-
-
 
 class CounterBloc extends Cubit<CounterState> {
   CounterBloc() : super(CounterState(0));
@@ -42,3 +45,34 @@ class CounterBloc extends Cubit<CounterState> {
   }
 }
 
+class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
+  ProductListBloc() : super(ProductListInitial()) {
+    on<LoadProductsEvent>(_mapLoadProductsEventToState);
+  }
+
+  void _mapLoadProductsEventToState(
+    LoadProductsEvent event,
+    Emitter<ProductListState> emit,
+  ) async {
+    try {
+      final List<Product> products = await fetchProductData();
+      emit(ProductListLoaded(products: products));
+    } catch (error) {
+      emit(ProductListError(error: error.toString()));
+    }
+  }
+}
+
+Future<List<Product>> fetchProductData() async {
+  final response =
+      await http.get(Uri.parse('http://192.168.56.1:8080/api/products'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = json.decode(response.body);
+    final List<Product> productList =
+        jsonData.map((item) => Product.fromJson(item)).toList();
+    return productList;
+  } else {
+    throw Exception('Failed to load product data');
+  }
+}

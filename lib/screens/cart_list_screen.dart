@@ -20,167 +20,177 @@ double calculateTotalPriceWithDelivery(
 }
 
 class CartScreen extends StatelessWidget {
-  final List<Product> cartItems;
-
-
   const CartScreen({
     Key? key,
-    required this.cartItems,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: AppBar(
-          elevation: 0,
-          backgroundColor: const Color.fromARGB(255, 251, 249, 249),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          centerTitle: true,
-          title: const Padding(
-            padding: EdgeInsets.fromLTRB(0, 33, 0, 0),
-            child: Text(
-              'Order',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30),
-            ),
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<CartBloc, CartState>(
-              builder: (context, state) {
-                if (state.cartItems.isEmpty) {
-                  return const Center(
-                    child: Text('Your cart is empty!'),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: state.cartItems.length,
-                    itemBuilder: (context, index) => Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
-                          child: Image.asset(
-                            cartItems[index].image,
-                            scale: 3,
-                          ),
-                        ),
-                        Text(
-                          '${cartItems[index].count} x',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 30, 0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 85,
-                                child: Text(
-                                  cartItems[index].name,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          '\$${cartItems[index].price}',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        BlocProvider(
-                          create: (context) => CounterBloc(),
-                          child: BlocBuilder<CounterBloc, CounterState>(
-                            builder: (context, counterState) {
-                              return IconButton(
-                                icon: const Icon(Icons.cancel_outlined),
-                                onPressed: () {
+    return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+      if (state.cartItems.isEmpty) {
+        return const Center(
+          child: Text('Your cart is empty!'),
+        );
+      } else {
+        double totalPrice = calculateTotalPrice(state.cartItems);
+        double deliveryFee = totalPrice * 0.05;
+        String formattedDeliveryFee = deliveryFee.toStringAsFixed(2);
 
-                                  final cartBloc = context.read<CartBloc>();
-                                  
-                                  cartBloc.add(RemoveFromCart(
-                                      state.cartItems[index],
-                                      cartItems[index].count));
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(100),
+            child: AppBar(
+              elevation: 0,
+              backgroundColor: const Color.fromARGB(255, 251, 249, 249),
+              centerTitle: true,
+              title: const Padding(
+                padding: EdgeInsets.fromLTRB(0, 33, 0, 0),
+                child: Text(
+                  'Order',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              ),
             ),
           ),
-          const Row(
+          body: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(30, 0, 30, 20),
-                child: Text(
-                  'Total',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+              Expanded(
+                child: BlocBuilder<CartBloc, CartState>(
+                  builder: (context, state) {
+                    if (state.cartItems.isEmpty) {
+                      return const Center(
+                        child: Text('Your cart is empty!'),
+                      );
+                    } else {
+                      return ListView.builder(
+                        itemCount: state.cartItems.length,
+                        itemBuilder: (context, index) => Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
+                              child: Image.asset(
+                                state.cartItems[index].image,
+                                scale: 3,
+                              ),
+                            ),
+                            Text(
+                              '${state.cartItems[index].count} x',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 130, 0),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: 105,
+                                    child: Text(
+                                      state.cartItems[index].name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              '\$${state.cartItems[index].price}',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            BlocProvider(
+                              create: (context) => CounterBloc(),
+                              child: BlocBuilder<CounterBloc, CounterState>(
+                                builder: (context, counterState) {
+                                  return IconButton(
+                                    icon: const Icon(
+                                      Icons.close,
+                                    ),
+                                    onPressed: () {
+                                      final cartBloc = context.read<CartBloc>();
+
+                                      cartBloc.add(RemoveFromCart(
+                                          state.cartItems[index],
+                                          state.cartItems[index].count));
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(180, 0, 0, 0),
-                child: Text(
-                  '\$10.95',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
+                    child: Image.asset(
+                      'assets/images/Delivery.png',
+                      scale: 2,
+                    ),
                   ),
-                ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 30, 20),
+                    child: Text(
+                      'Delivery',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(230, 0, 0, 0),
+                    child: Text(
+                      '\$$formattedDeliveryFee',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ],
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
+              _CartTotal(),
             ],
           ),
-          const SizedBox(width: 10),
-          _CartTotal(),
-          const SizedBox(height: 40),
-        ],
-      ),
-    );
+        );
+      }
+    });
   }
 }
 
 class _CartTotal extends StatelessWidget {
-  final double deliveryFee = 10.95;
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         double totalPrice = calculateTotalPrice(state.cartItems);
+        double deliveryFee = totalPrice * 0.05;
         double totalPriceWithDelivery = totalPrice + deliveryFee;
+
+        String formattedTotalPriceWithDelivery =
+            totalPriceWithDelivery.toStringAsFixed(2);
+        String formattedTotalPrice = totalPrice.toStringAsFixed(2);
 
         return Padding(
           padding: const EdgeInsets.all(15.0),
@@ -194,37 +204,40 @@ class _CartTotal extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   ),
                   Text(
-                    '\$$totalPriceWithDelivery',
+                    '\$$formattedTotalPrice',
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 28,
+                      fontSize: 20,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 50),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.amber,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text(
-                  'CHECKOUT',
-                  style: TextStyle(color: Colors.black),
-                ),
+                child: Row(children: [
+                  const Text(
+                    'CHECKOUT',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  const SizedBox(width: 310),
+                  Text(
+                    '\$$formattedTotalPriceWithDelivery',
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ]),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Buying not supported yet.'),
-                    ),
-                  );
+                  _showConfirmationDialog(context);
                 },
               ),
             ],
@@ -234,4 +247,60 @@ class _CartTotal extends StatelessWidget {
     );
   }
 }
-                                
+
+Future<void> _showConfirmationDialog(BuildContext context) async {
+  final cartBloc = BlocProvider.of<CartBloc>(context);
+
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Confirm Order'),
+        content: const Text(
+            'Are you sure you want to confirm your order and clear the cart?'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              return TextButton(
+                child: const Text('Confirm'),
+                onPressed: () {
+                  cartBloc.add(ConfirmOrderAndClearCart());
+                  Navigator.of(context).pop();
+                  _showOrderConfirmedDialog(context);
+                },
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _showOrderConfirmedDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Order Confirmed'),
+        content: const Text('Your order has been confirmed.'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

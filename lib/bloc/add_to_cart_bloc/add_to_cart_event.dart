@@ -29,6 +29,13 @@ class RemoveFromCart extends CartEvent {
 
 class ResetCount extends CartEvent {}
 
+
+class ConfirmOrderAndClearCart extends CartEvent {
+ 
+
+}
+
+
 class CounterEvent extends Cubit<int> {
   final Product product;
   final int count;
@@ -37,3 +44,7 @@ class CounterEvent extends Cubit<int> {
 
   List<Object> get props => [product, count];
 }
+
+abstract class ProductListEvent {}
+
+class LoadProductsEvent extends ProductListEvent {}
