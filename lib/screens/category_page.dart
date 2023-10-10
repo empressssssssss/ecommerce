@@ -15,7 +15,7 @@ class CategoryPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           title: const Text(
-            'Categories',
+            'Categories 1',
             style: TextStyle(
               color: Colors.black,
             ),
