@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_app2/bloc/add_to_cart_bloc/add_to_cart_bloc.dart';
 import 'package:interview_app2/bloc/add_to_cart_bloc/add_to_cart_event.dart';
 import 'package:interview_app2/screens/home_page.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -16,7 +17,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CounterBloc()),
         BlocProvider(
             create: (_) => ProductListBloc()..add(LoadProductsEvent())),
-        // BlocProvider<CounterBloc>(create: (_) => CounterBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -24,8 +24,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.indigo,
         ),
         title: 'Ecommerce',
-        /*  initialRoute: '/',
-        routes: {'/': (context) => const ProductListScreen()},*/
         home: const HomePage(),
       ),
     );

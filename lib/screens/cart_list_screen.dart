@@ -110,24 +110,16 @@ class CartScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            BlocProvider(
-                              create: (context) => CounterBloc(),
-                              child: BlocBuilder<CounterBloc, CounterState>(
-                                builder: (context, counterState) {
-                                  return IconButton(
-                                    icon: const Icon(
-                                      Icons.close,
-                                    ),
-                                    onPressed: () {
-                                      final cartBloc = context.read<CartBloc>();
-
-                                      cartBloc.add(RemoveFromCart(
-                                          state.cartItems[index],
-                                          state.cartItems[index].count));
-                                    },
-                                  );
-                                },
+                            IconButton(
+                              icon: const Icon(
+                                Icons.close,
                               ),
+                              onPressed: () {
+                                final cartBloc = context.read<CartBloc>();
+                                cartBloc.add(RemoveFromCart(
+                                    state.cartItems[index],
+                                    state.cartItems[index].count));
+                              },
                             ),
                           ],
                         ),

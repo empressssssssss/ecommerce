@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  final CounterBloc counterBloc = CounterBloc();
+  //final CounterBloc counterBloc = CounterBloc();
 
   CartBloc() : super(CartState([])) {
     on<CartEvent>(_mapEventToState);
@@ -45,6 +45,8 @@ class CounterBloc extends Cubit<CounterState> {
   }
 }
 
+//Map<int, CounterBloc> counterBlocs = {};
+
 class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   ProductListBloc() : super(ProductListInitial()) {
     on<LoadProductsEvent>(_mapLoadProductsEventToState);
@@ -64,8 +66,8 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 }
 
 Future<List<Product>> fetchProductData() async {
-  final response =
-      await http.get(Uri.parse('http://192.168.56.1:8080/api/products'));
+  final response = await http.get(Uri.parse(
+      'https://stagingshop.threls.dev/api/products?filter[class]=food&filter[taxons]=pizza'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(response.body);
@@ -76,3 +78,6 @@ Future<List<Product>> fetchProductData() async {
     throw Exception('Failed to load product data');
   }
 }
+//http://192.168.56.1:8080/api/products
+//https://stagingshop.threls.dev/api/products?filter[class]=food&filter[taxons]=pizza
+

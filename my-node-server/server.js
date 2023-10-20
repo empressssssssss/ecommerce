@@ -1,12 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 8080; // You can change this port as needed
+const port = 8000; 
 
-// Enable CORS for your server
 app.use(cors());
 
-// Your product data
+
 const productList = [
   {
     id: 1,
@@ -28,7 +27,7 @@ const productList = [
   },
 ];
 
-// Define a route to serve the product data
+
 app.get('/api/products', (req, res) => {
   res.json(productList);
 });

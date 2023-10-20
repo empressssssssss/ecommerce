@@ -27,13 +27,42 @@ class RemoveFromCart extends CartEvent {
   List<Object> get props => [product, count];
 }
 
-class ResetCount extends CartEvent {}
+//class ResetCount extends CartEvent {}
 
 
 class ConfirmOrderAndClearCart extends CartEvent {
  
 
 }
+
+
+class IncreaseProductQuantity extends CartEvent {
+  final Product product;
+
+  IncreaseProductQuantity(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
+
+class DecreaseProductQuantity extends CartEvent {
+  final Product product;
+
+  DecreaseProductQuantity(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
+
+class ResetProductQuantity extends CartEvent {
+  final Product product;
+
+  ResetProductQuantity(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
+
 
 
 class CounterEvent extends Cubit<int> {
