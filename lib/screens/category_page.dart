@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:interview_app2/screens/product_list_screen.dart';
 
+
+
 class CategoryPage extends StatelessWidget {
   const CategoryPage({super.key});
 
@@ -88,3 +90,7 @@ class _BoxGridState extends State<BoxGrid> {
     );
   }
 }
+
+
+
+

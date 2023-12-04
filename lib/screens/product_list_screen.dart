@@ -227,7 +227,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     child: BlocBuilder<
                                                         CounterBloc,
                                                         CounterState>(
-                                                      //  bloc: counterBloc,
                                                       builder: (context,
                                                           counterState) {
                                                         return SizedBox(

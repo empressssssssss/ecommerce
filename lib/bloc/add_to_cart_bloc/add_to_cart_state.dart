@@ -10,6 +10,8 @@ class CounterState {
 
   CounterState(this.count);
 
+  CounterState.initial() : count = 0;
+  
   CounterState operator -(int value) {
     return CounterState(count - value);
   }
@@ -22,6 +24,24 @@ class CounterState {
     return CounterState(count + value);
   }
 }
+
+ /*class CounterState {
+  final int count;
+
+  CounterState(this.count);
+
+  CounterState operator -(int value) {
+    return CounterState(count - value);
+  }
+
+   bool operator >(CounterState other) {
+    return count > other.count;
+  }
+
+  CounterState operator +(int value) {
+    return CounterState(count + value);
+  }
+}*/
 
 abstract class ProductListState {}
 

@@ -28,6 +28,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
       if (state.cartItems.isEmpty) {
+        
         return const Center(
           child: Text('Your cart is empty!'),
         );

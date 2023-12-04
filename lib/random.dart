@@ -188,5 +188,19 @@ https://stagingshop.threls.dev/api/products?filter[class]=food&filter[taxons]=pi
                                                                       print(
                                                                           'After state.products: ${state.products}');
                                                                       print(
-                                                                          'After products: ${products}');                   
+                                                                          'After products: ${products}');          
+
+
+
+
+    test('Reset sets the state to CounterState(0)', () {
+      counterBloc.increment(); // Increment to a non-zero count
+      counterBloc.reset();
+      expect(counterBloc.state, CounterState(0));
+    });
+
+
+
+
  */
+  

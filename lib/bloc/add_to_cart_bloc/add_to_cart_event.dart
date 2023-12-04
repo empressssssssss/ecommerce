@@ -10,8 +10,8 @@ abstract class CartEvent extends Equatable {
 class AddToCart extends CartEvent {
   final Product product;
   final int count;
-
-  AddToCart(this.product, this.count);
+ 
+  AddToCart(this.product, this.count, );
 
   @override
   List<Object> get props => [product, count];
